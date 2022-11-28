@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    Your To Do List
+{% endblock %}
+
+{% block content %}
+    <h1>{{ls.name}}</h1>
+    <ul>
+        {% for item in ls.item_set.all %}
+            {% if item.completed == False %}
+                <li>{{item.text}} - incomplete</li>
+            {% else %}
+                <li>
+                    {{item.text}} - complete
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock %}
