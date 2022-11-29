@@ -8,19 +8,28 @@
     <h1>{{ls.name}}</h1>
     <form method="POST" action="#">    
         {% csrf_token %}
-        <ul>
-            {% for item in ls.item_set.all %}
-                {% if item.completed == True %}
-                    <li><input type="checkbox" value="clicked" name="c{{item.id}}" checked>{{item.text}}</li>
-                {% else %}
-                    <li>
-                        <input type="checkbox" value="clicked" name="c{{item.id}}">{{item.text}}
-                    </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-        <button type="submit" name="save" value="save">Save</button>
-        <input type="text" name="new">
-        <button type="submit" name="newItem" value="newItem">Add Item</button>
+        {% for item in ls.item_set.all %}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    {% if item.completed == True %}
+                        <input type="checkbox" value="clicked" name="c{{item.id}}" checked>
+                    {% else %}
+                        <input type="checkbox" value="clicked" name="c{{item.id}}">
+                    {% endif %}
+                </div>
+            </div>
+            <input class="form-control" type="text" value="{{item.text}}">
+        </div>
+        {% endfor %}
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <button class="btn btn-success" type="submit" name="newItem" value="newItem">Add Item</button>
+            </div>
+            <input type="text" name="new">
+        </div>
+
+        <button class="btn btn-success" type="submit" name="save" value="save">Save</button>
     </form>
 {% endblock %}

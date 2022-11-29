@@ -6,10 +6,14 @@ Create New List
 {% endblock %}
 
 {% block content %}
-Create Page
-<form method="post" action="/create/">
+<h3>Create List</h3>
+<form method="post" action="/create/" class="form-group">
     {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit" name="save">Create New</button>
+    <div class="input-group mp-3">
+        <div class="input-group-prepend">
+            <button class="btn btn-success" type="submit" name="save">Create New</button>
+        </div>
+        {{form.name}}
+    </div>
 </form>
 {% endblock %}
