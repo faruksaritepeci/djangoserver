@@ -1,0 +1,17 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+Your To-Do Lists
+{% endblock %}
+
+{% block content %}
+
+    {% if not user.is_authenticated %}
+        <p>Start creating lists by <a href="/register">Registering!</a></p>
+    {% endif %}
+
+    {% for td in user.todolist_set.all %}
+        <p><a href="/{{td.id}}">{{td.name}}</a></p>
+    {% endfor %}
+
+{% endblock %}

@@ -46,7 +46,12 @@
         <div class="sidebar">
             <a href="/home">Home</a>
             <a href="/create">Create</a>
-            <a href="/2">View</a>
+            <a href="/view">View</a>
+            {% if not user.is_authenticated %}
+                <a href="/login">Log In</a>
+            {% else %}
+                <a href="/logout">Log Out</a>
+            {% endif %}
         </div>
 
         <div class = "main" id="content" name="content">

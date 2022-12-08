@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
 from .models import ToDoList, Item
 from .forms import CreateNewList
 
@@ -11,6 +11,10 @@ def home(response):
     return render(response, "main/home.html", {})
 
 def index(response, id):
+    if not response.user.is_authenticated:
+        return redirect("/login")
+    if not response.user.todolist_set.filter(id=id):
+        return redirect("/view")
     ls = ToDoList.objects.get(id=id)
     
     if response.method == "POST":
@@ -34,19 +38,22 @@ def index(response, id):
 
     return render(response, "main/list.html", {"ls": ls})
 
-def create(response):
+def create(response: HttpRequest):
+    if not response.user.is_authenticated: return redirect("/login")
     if response.method == "POST":
         form = CreateNewList(response.POST)
-        
         if form.is_valid():
             n = form.cleaned_data["name"]
-            t = ToDoList(name=n)
-            t.save()
+            t = response.user.todolist_set.create(name=n)
         
-        return HttpResponseRedirect(f"/%i" %t.id)
+            return HttpResponseRedirect(f"/%i" %t.id)
+        else: return redirect("/create")
     else:
         form = CreateNewList()
     return render(response, "main/create.html", {"form": form})
+
+def view(response: HttpRequest):
+    return render(response, "main/view.html", {})
 
 
 def redirectHome(response):
