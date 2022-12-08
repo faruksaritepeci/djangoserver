@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import ToDoList, Item
 from .forms import CreateNewList
 
 # Create your views here.
+def root(responese):
+    return redirect("/home")
 
 def home(response):
     return render(response, "main/home.html", {})
@@ -45,3 +47,7 @@ def create(response):
     else:
         form = CreateNewList()
     return render(response, "main/create.html", {"form": form})
+
+
+def redirectHome(response):
+    return redirect("/home")
